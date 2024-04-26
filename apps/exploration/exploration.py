@@ -10,7 +10,7 @@ from fca.readwrite import uwrite_dot
 from fca.algorithms.exploration.exploration import (AttributeExploration, 
                                                     ExplorationDB)
 
-from models import FObject, FAttribute, AttributeImplication
+from .models import FObject, FAttribute, AttributeImplication
 
 class ImplicationsContainer(object):
 
@@ -71,7 +71,7 @@ class ImplicationsList(object):
         return self._data[key]
     
     def __iter__(self):
-        for imp in self._data.values():
+        for imp in list(self._data.values()):
             yield imp
 
     def _get_implications(self):

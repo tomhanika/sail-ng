@@ -6,13 +6,13 @@ from django import forms
 from django.utils import simplejson
 from django.db import transaction
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import datetime
 
-from forms import ObjectForm, AttributeForm
-from models import FObject, FAttribute, AttributeImplication
-from misc import import_context, prepare_data_for_edit, get_csv
-from exploration import ExplorationWrapper
+from .forms import ObjectForm, AttributeForm
+from .models import FObject, FAttribute, AttributeImplication
+from .misc import import_context, prepare_data_for_edit, get_csv
+from .exploration import ExplorationWrapper
 
 from django.conf import settings
 if "notification" in settings.INSTALLED_APPS:
@@ -61,7 +61,7 @@ def knowledge_base(request, template_name="exploration/kb.html"):
     
     filter_list = request.GET.getlist("a")
     now_filtering = len(filter_list) != 0
-    filter_list = [urllib.unquote(attr) for attr in filter_list]
+    filter_list = [urllib.parse.unquote(attr) for attr in filter_list]
     if now_filtering:
         objects = []
         attributes_set = set()
@@ -436,7 +436,7 @@ def submit_intent(request):
 
     if request.method == 'POST':
         object_pk = int(request.POST['pk'])
-        intent = [int(id_) for id_ in request.POST.getlist(u'intent[]')]
+        intent = [int(id_) for id_ in request.POST.getlist('intent[]')]
         try:
             ExplorationWrapper.edit_object(group, object_pk, set(intent))
             status = 'ok'

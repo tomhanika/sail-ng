@@ -1,7 +1,7 @@
-from models import FObject, FAttribute, AttributeImplication
-from exploration import ExplorationWrapper
+from .models import FObject, FAttribute, AttributeImplication
+from .exploration import ExplorationWrapper
 
-from StringIO import StringIO
+from io import StringIO
 
 import fca
 
@@ -24,13 +24,13 @@ def import_context(group, file_):
     input_file.readline() # Empty line
 
     objects = [input_file.readline().strip() 
-               for i in xrange(number_of_objects)]
+               for i in range(number_of_objects)]
     attributes = [input_file.readline().strip() 
-                  for i in xrange(number_of_attributes)]
+                  for i in range(number_of_attributes)]
 
     table = []
-    for i in xrange(number_of_objects):
-        line = map(lambda c: c=="X", input_file.readline().strip())
+    for i in range(number_of_objects):
+        line = [c=="X" for c in input_file.readline().strip()]
         table.append(line)
 
     input_file.close()
@@ -69,8 +69,8 @@ def get_csv(group):
     
     out = StringIO()
     q = lambda s: s.replace('\"', '\'')
-    print >>out, u";" + u";".join(q(attr) for attr in attribute_names)
-    f = lambda n: u"1" if n else u"0"
-    for i in xrange(len(object_names)):
-        print >>out, u";".join([q(object_names[i])] + [f(n) for n in table[i]])
+    print(";" + ";".join(q(attr) for attr in attribute_names), file=out)
+    f = lambda n: "1" if n else "0"
+    for i in range(len(object_names)):
+        print(";".join([q(object_names[i])] + [f(n) for n in table[i]]), file=out)
     return out.getvalue()

@@ -1,5 +1,5 @@
 from django import forms
-from models import FObject, FAttribute
+from .models import FObject, FAttribute
 
 class ObjectForm(forms.ModelForm):
 
